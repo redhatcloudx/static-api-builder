@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "apibuilder"
+version = "0.1.0"
+description = ""
+authors = ["Major Hayden <major@redhat.com>"]
+readme = "README.md"
+packages = [{include = "apibuilder", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^1.5.3"
+zstandard = "^0.20.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+awsbuilder = "apibuilder.aws:main"
