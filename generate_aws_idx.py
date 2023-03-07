@@ -56,7 +56,6 @@ def write_owner_ids(df):
         if len(owner_df.index) < 10:
             continue
 
-        print(f"Writing owner {owner_id} to file")
         output_dir = f"{AWS_IDX_DIR}/ownerid/{owner_id}"
         makedirs(output_dir)
         owner_df.to_json(f"{output_dir}/index.json", orient="records")
