@@ -64,12 +64,17 @@ def write_owner_ids(df):
 def write_image_ids(df):
     """Split the data frames by ImageID."""
     print("Writing images based on ImageId")
-    for image_id in df.ImageId.unique():
+    counter = 0
+
+    for image_id in df.ImageId:
         image_df = df[df.ImageId == image_id]
 
         output_dir = f"{AWS_IDX_DIR}/imageid/{image_id}"
         makedirs(output_dir)
         image_df.to_json(f"{output_dir}/index.json", orient="records")
+
+        if counter % 1000 == 0:
+            print(f"Processed {counter} images...")
 
 
 def main():
