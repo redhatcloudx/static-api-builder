@@ -1,5 +1,4 @@
 """Simple AWS builder."""
-import logging
 from glob import glob
 from os import makedirs
 from os.path import basename
@@ -12,10 +11,6 @@ AWS_JSON_GLOB = f"{AWS_JSON_DIR}/*.json"
 AWS_IDX_DIR = "public/idx/aws/ownerid"
 
 
-logger = logging.getLogger("aws")
-logger.setLevel(logging.DEBUG)
-
-
 def get_regions() -> list:
     """Get the regions from the data."""
     return [basename(x).split(".")[0] for x in glob(AWS_JSON_GLOB)]
@@ -23,7 +18,7 @@ def get_regions() -> list:
 
 def read_data():
     """Generate a dataframe containing all of the region data."""
-    logger.info("Reading data from JSON files...")
+    print("Reading data from JSON files...")
     data_frames = [read_json(region) for region in get_regions()]
     df = pd.concat(data_frames, ignore_index=True)
     df.sort_values(by=["CreationDate"], inplace=True)
@@ -60,7 +55,7 @@ def write_owner_ids(df):
         if len(owner_df.index) < 10:
             continue
 
-        logger.info(f"Writing owner {owner_id} to file")
+        print(f"Writing owner {owner_id} to file")
         output_dir = f"{AWS_IDX_DIR}/{owner_id}"
         makedirs(output_dir)
         owner_df.to_json(f"{output_dir}/index.html", orient="records")
