@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONUNBUFFERED: 1
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,18 +28,11 @@ jobs:
       - name: Get tree
         run: tree
 
-      # - name: Set up Python 3.11
-      #   uses: actions/setup-python@v3
-      #   with:
-      #     python-version: "3.11"
+      - name: Install requirements
+        run: pip install pandas
 
-      # - name: Install
-      #   run: |
-      #     pipx install poetry
-      #     poetry install
+      - name: Build static API files
+        run: python generate_aws_idx.py
 
-      # - name: Build static API files
-      #   run: poetry run awsbuilder
-
-      # - name: Check output
-      #   run: du -hs public/*
+      - name: Check output
+        run: tree public
