@@ -74,8 +74,8 @@ def write_image_ids(df):
         image_df.to_json(f"{output_dir}/index.json", orient="records")
 
         counter += 1
-        if counter % 1000000 == 0:
-            print(f"Processed {counter/1000000}M images...")
+        if counter % 1000 == 0:
+            print(f"Processed {counter/1000}K images...")
 
 
 def main():
