@@ -6,8 +6,6 @@ from os.path import basename
 
 import pandas as pd
 
-from apibuilder import config
-
 
 AWS_JSON_DIR = "cloud-json/aws"
 AWS_JSON_GLOB = f"{AWS_JSON_DIR}/*.json"
@@ -62,9 +60,10 @@ def write_owner_ids(df):
         if len(owner_df.index) < 10:
             continue
 
-        output_file = f"{AWS_IDX_DIR}/{owner_id}/index.html"
-        logger.info(f"Writing {owner_id} to {output_file}")
-        owner_df.to_json(output_file, orient="records")
+        logger.info(f"Writing owner {owner_id} to file")
+        output_dir = f"{AWS_IDX_DIR}/{owner_id}"
+        makedirs(output_dir)
+        owner_df.to_json(f"{output_dir}/index.html", orient="records")
 
 
 def main():
@@ -72,3 +71,7 @@ def main():
     df = read_data()
     df.info()
     write_owner_ids(df)
+
+
+if __name__ == "__main__":
+    main()
