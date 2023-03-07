@@ -2,6 +2,7 @@
 from glob import glob
 from os import makedirs
 from os.path import basename
+import json
 
 import pandas as pd
 
@@ -57,7 +58,7 @@ def write_owner_ids(df):
             continue
 
         output_dir = f"{AWS_IDX_DIR}/ownerid/{owner_id}"
-        makedirs(output_dir)
+        makedirs(output_dir, exist_ok=True)
         owner_df.to_json(f"{output_dir}/index.json", orient="records")
 
 
@@ -66,12 +67,14 @@ def write_image_ids(df):
     print("Writing images based on ImageId")
     counter = 0
 
-    for image_id in df.ImageId:
-        image_df = df[df.ImageId == image_id]
-
+    # This seems weird, but it's much much faster than letting pandas write the data.
+    for row in df.to_json(orient="records", lines=True).splitlines():
+        image_id = json.loads(row)["ImageId"]
         output_dir = f"{AWS_IDX_DIR}/imageid/{image_id}"
-        makedirs(output_dir)
-        image_df.to_json(f"{output_dir}/index.json", orient="records")
+        makedirs(output_dir, exist_ok=True)
+
+        with open(f"{output_dir}/index.json", "w") as fileh:
+            fileh.write(row)
 
         counter += 1
         if counter % 1000 == 0:
