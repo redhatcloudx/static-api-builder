@@ -77,7 +77,7 @@ def write_image_ids(df):
             fileh.write(row)
 
         counter += 1
-        if counter % 1000 == 0:
+        if counter % 100000 == 0:
             print(f"Processed {counter/1000}K images...")
 
 
