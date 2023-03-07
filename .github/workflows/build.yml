@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -13,20 +13,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.11"
+      - name: Download logs from artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          path: cloud-json
+          workflow: update-image-data.yml
 
-    - name: Install
-      run: |
-        pipx install poetry
-        poetry install
+      - name: Get tree
+        run: tree
 
-    - name: Build static API files
-      run: poetry run awsbuilder
+      # - name: Set up Python 3.11
+      #   uses: actions/setup-python@v3
+      #   with:
+      #     python-version: "3.11"
 
-    - name: Check output
-      run: du -hs public/*
+      # - name: Install
+      #   run: |
+      #     pipx install poetry
+      #     poetry install
+
+      # - name: Build static API files
+      #   run: poetry run awsbuilder
+
+      # - name: Check output
+      #   run: du -hs public/*
