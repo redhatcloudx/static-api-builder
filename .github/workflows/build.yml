@@ -20,6 +20,7 @@ jobs:
         with:
           path: cloud-json
           workflow: update-image-data.yml
+          repo: redhatcloudx/cloud-image-retriever
 
       - name: Get tree
         run: tree
