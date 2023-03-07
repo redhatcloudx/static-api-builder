@@ -37,9 +37,6 @@ jobs:
       - name: Build static API files
         run: python generate_aws_idx.py
 
-      - name: Check output
-        run: tree
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
